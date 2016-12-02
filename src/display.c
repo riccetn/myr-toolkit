@@ -76,6 +76,7 @@ void myr_display_unref(MyrDisplay *disp) {
 	if(--disp->refcount != 0)
 		return;
 
+	xcb_ewmh_connection_wipe(&disp->ewmh);
 	xcb_disconnect(disp->xcon);
 	free(disp);
 }
