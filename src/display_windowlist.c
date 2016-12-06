@@ -27,6 +27,9 @@
 
 #include "display_windowlist.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct node Node;
 
 struct node {
@@ -35,13 +38,25 @@ struct node {
 };
 
 struct myr_display_window_list {
-	Node **table;
+	Node *table;
 	int nbuckets;
 	int nnodes;
 };
 
 MyrDisplayWindowList *myr_display_window_list_create(void) {
-	return NULL;
+	MyrDisplayWindowList *list = malloc(sizeof *list);
+	if(!list)
+		return NULL;
+	memset(list, '\0', sizeof *list);
+
+	list->nbuckets = 16;
+	list->nnodes = 0;
+	list->table = calloc(list->nbuckets, sizeof *list->table);
+	if(!list) {
+		myr_display_window_list_free(list);
+		return NULL;
+	}
+	return list;
 }
 
 void myr_display_window_list_free(MyrDisplayWindowList *list) {
