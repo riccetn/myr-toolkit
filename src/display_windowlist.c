@@ -60,6 +60,9 @@ MyrDisplayWindowList *myr_display_window_list_create(void) {
 }
 
 void myr_display_window_list_free(MyrDisplayWindowList *list) {
+	if(list->table)
+		free(list->table);
+	free(list);
 }
 
 MyrWindow *myr_display_window_list_lookup(MyrDisplayWindowList *list, xcb_window_t xwindowid) {
